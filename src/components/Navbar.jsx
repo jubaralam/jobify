@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { navlinks } from "../../data";
 import { Link, useNavigate } from "react-router-dom";
@@ -5,15 +6,17 @@ import { Link, useNavigate } from "react-router-dom";
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
   const navigate = useNavigate();
   const loginLogout = () => {
-    
     if (token) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      alert("you have loggedOut");
       navigate("/");
     } else {
       navigate("/login");
@@ -35,7 +38,10 @@ const Navbar = () => {
           {/* Navigation Links */}
           <ul className="flex ">
             {navlinks?.map((item, idx) => (
-              <li key={idx} className="py-2 px-5 text-white hover:text-gray-300">
+              <li
+                key={idx}
+                className="py-2 px-5 text-white hover:text-gray-300"
+              >
                 {" "}
                 <Link to={item.link}>{item.name}</Link>
               </li>
@@ -43,9 +49,20 @@ const Navbar = () => {
             <li>
               {/* Conditional Login/Logout */}
               {localStorage.getItem("token") ? (
-                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                  Logout
-                </button>
+                <>
+                  <Link
+                    to={`/${user.role}/dashboard`}
+                    className="py-2 px-5 text-white hover:text-gray-300"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={loginLogout}
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Logout
+                  </button>
+                </>
               ) : (
                 <button
                   onClick={loginLogout}
@@ -103,12 +120,20 @@ const Navbar = () => {
               ))}
             </ul>
             {token ? (
-              <button
-                onClick={loginLogout}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Logout
-              </button>
+              <>
+                <Link
+                  to={`/${user.role}/dashboard`}
+                  className="text-gray-300 hover:text-white"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={loginLogout}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Login
