@@ -1,12 +1,27 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { navlinks } from "../../data";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const token = localStorage.getItem("token");
-  const user = JSON.parse(localStorage.getItem("user"));
+
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getToken = localStorage.getItem("token");
+    const getUser = localStorage.getItem("user");
+
+    try {
+      setToken(getToken);
+      setUser(getUser ? JSON.parse(getUser) : null); // Parse only if data exists
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      localStorage.removeItem("user"); // Clear invalid data
+      setUser(null);
+    }
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -51,7 +66,7 @@ const Navbar = () => {
               {localStorage.getItem("token") ? (
                 <>
                   <Link
-                    to={`/${user.role}/dashboard`}
+                    to={`/${user?.role}/dashboard`}
                     className="py-2 px-5 text-white hover:text-gray-300"
                   >
                     Dashboard

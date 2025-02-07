@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 // import { Button } from '@/components/ui/button';
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -13,7 +13,7 @@ const JobSeekerLogin = () => {
     e.preventDefault();
 
     const payload = { email, password };
-   
+
     try {
       const res = await axios.post(
         `https://jobify-1q5f.onrender.com/api/jobseeker/login`,

@@ -15,6 +15,9 @@ import RecruiterProfile from "../pages/RecruiterProfile";
 import PrivateRoute from "./PrivateRoute";
 import JobsPosted from "../pages/JobsPosted";
 import JobSeekerRegistration from "../pages/JobSeekerRegistration";
+import RecruiterLogin from "../pages/RecruiterLogin";
+import RecruiterRegistration from "../pages/RecruiterRegistration";
+import RecruiterJobDetails from "../components/RecruiterJobDetails";
 const Router = () => {
   const [user, setUser] = useState(null);
 
@@ -30,6 +33,8 @@ const Router = () => {
       <Route path="/" element={<Home />} />
       <Route path="/job-details/:id" element={<JobDetails />} />
       <Route path="/login" element={<JobSeekerLogin />} />
+      <Route path="/recruiter/login" element={<RecruiterLogin />} />
+      <Route path="/recruiter/register" element={<RecruiterRegistration />} />
       <Route path="/jobs" element={<Jobs />} />
       <Route path="/register" element={<JobSeekerRegistration />} />
 
@@ -78,18 +83,27 @@ const Router = () => {
           </PrivateRoute>
         }
       />
+    
       <Route
-        path="/recruiter/dashboard"
+        path="/recruiter/posted-jobs"
         element={
           <PrivateRoute allowedRoles={["recruiter"]}>
-            <JobSeekerProfile />
+            <JobsPosted />
           </PrivateRoute>
         }
       />
-      <Route element={<PrivateRoute allowedRoles={["recruiter"]} />}>
+      <Route
+        path="/recruiter/job/:id"
+        element={
+          <PrivateRoute allowedRoles={["recruiter"]}>
+            <RecruiterJobDetails />
+          </PrivateRoute>
+        }
+      />
+      {/* <Route element={<PrivateRoute allowedRoles={["recruiter"]} />}>
         <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
         <Route path="/recruiter/jobs-posted" element={<JobsPosted />} />
-      </Route>
+      </Route> */}
     </Routes>
   );
 };
